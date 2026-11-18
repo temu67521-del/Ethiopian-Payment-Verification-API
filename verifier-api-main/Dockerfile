@@ -2,9 +2,8 @@
 FROM node:22-bookworm-slim AS base
 WORKDIR /app
 
-# Copy standalone pnpm binary from official pnpm image
-COPY --from=ghcr.io/pnpm/pnpm:10 /opt/pnpm /opt/pnpm
-RUN for bin in pnpm pn pnpx pnx; do ln -s "/opt/pnpm/$bin" "/usr/local/bin/$bin"; done
+# Install pnpm globally via npm (included in node:22-bookworm-slim)
+RUN npm install -g pnpm@10
 
 # Skip Puppeteer's bundled Chromium download (we install system chromium below)
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
